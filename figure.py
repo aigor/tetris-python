@@ -19,12 +19,25 @@ class Figure:
     def numbOfElems(self):        
         return sum ( [ sum ( [self.repr[i][j] for j in self.rows ] ) for i in self.rows ] )
 
-    def rotate(self):
-      pass
+    def clone(self):
+        emptyFigure = Figure(2,2, ["     ","     ","     ","     ","     "])
+        for i in self.rows:
+            for j in self.rows:
+                emptyFigure.repr[i][j] = self.repr[i][j]
+        return emptyFigure
+
+    def rotateOnce(self):
+        res = self.clone()
+        for i in self.rows:
+            for j in self.rows:
+                res.repr[i][j] = self.repr[j][self.rows_num - 1 - i]
+        return res
 
     def rotate(self, times):
-      pass
-
+        res = self.clone()
+        for i in range(0, times):
+            res = res.rotateOnce()
+        return res
 
 I = Figure(2, 2, ["     ",
                   "  *  ",

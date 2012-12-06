@@ -18,14 +18,24 @@ def make_decision(params):
     glass = Glass(glass_str)
 
     glassWithFigure = glass.addFigure(figure, x, y)
-    #glassWithFigure = glass.dropFigure(figure, x, y)
-    glassWithFigure.printGlass()
-    print "Surface:", glass.getSurface()
-    print "Range:", glass.getSurfaceRange()   
+    glassWithFigure.printGlass()    
 
-    figure.printFigure()
-    print "Num of elems in figure:", figure.numbOfElems()
-    return "left=0"
+    print "Current surface range:", glass.getSurfaceRange()   
+    print "Current overal range:", glass.getGlassRange()   
+    solution = glass.findSolution(figure, x, y)   
+    print "Solution surface range:", solution[2].getSurfaceRange()
+    print "Solution complete lines:", solution[2].getNumberOfCompleteLines()
+    print "Solution number of holes:", solution[2].getNumberOfHoles()
+    print "Solution max height:", solution[2].getMaxHeight()
+    print "Solution overal range:", solution[2].getGlassRange()   
+    
+    figure.printFigure()    
+    
+    solutionPhrase = ("left=" + str(x - solution[0]) if (solution[0] <= x) else ("right=" + str(solution[0] - x)))
+    solutionPhrase += ", rotate=" + str(solution[1])
+    solutionPhrase += ", drop"    
+    print "Solution phrase:", solutionPhrase     
+    return solutionPhrase
 
 def handle_request(path):    
     return make_decision(urlparse.parse_qs(path[2:]))    
